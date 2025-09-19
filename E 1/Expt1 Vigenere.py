@@ -1,39 +1,32 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Sep 12 10:15:26 2025
-
-@author: navee
-"""
 
 def vigenere_encrypt(text, key):
-    result = ""
-    key_length = len(key)
-    key_int = [ord(i.lower()) - ord('a') for i in key]
-    for i, char in enumerate(text):
-        if char.isalpha():
-            base = ord('A') if char.isupper() else ord('a')
-            offset = key_int[i % key_length]
-            result += chr((ord(char) - base + offset) % 26 + base)
+    encrypted_chars = []
+    key_shifts = [ord(c.lower()) - ord('a') for c in key]
+    for idx, ch in enumerate(text):
+        if ch.isalpha():
+            base = ord('A') if ch.isupper() else ord('a')
+            shift = key_shifts[idx % len(key_shifts)]
+            encrypted_chars.append(chr((ord(ch) - base + shift) % 26 + base))
         else:
-            result += char
-    return result
+            encrypted_chars.append(ch)
+    return "".join(encrypted_chars)
 
 def vigenere_decrypt(ciphertext, key):
-    result = ""
-    key_length = len(key)
-    key_int = [ord(i.lower()) - ord('a') for i in key]
-    for i, char in enumerate(ciphertext):
-        if char.isalpha():
-            base = ord('A') if char.isupper() else ord('a')
-            offset = key_int[i % key_length]
-            result += chr((ord(char) - base - offset) % 26 + base)
+    decrypted_chars = []
+    key_shifts = [ord(c.lower()) - ord('a') for c in key]
+    for idx, ch in enumerate(ciphertext):
+        if ch.isalpha():
+            base = ord('A') if ch.isupper() else ord('a')
+            shift = key_shifts[idx % len(key_shifts)]
+            decrypted_chars.append(chr((ord(ch) - base - shift) % 26 + base))
         else:
-            result += char
-    return result
+            decrypted_chars.append(ch)
+    return "".join(decrypted_chars)
 
-# Example usage
-plaintext = "Network Security"
-key = "key"
-ciphertext = vigenere_encrypt(plaintext, key)
-print("Encrypted:", ciphertext)
-print("Decrypted:", vigenere_decrypt(ciphertext, key))
+if __name__ == "__main__":
+    plaintext = "Network Security"
+    key = "key"
+    encrypted = vigenere_encrypt(plaintext, key)
+    decrypted = vigenere_decrypt(encrypted, key)
+    print(f"Encrypted: {encrypted}")
+    print(f"Decrypted: {decrypted}")
